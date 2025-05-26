@@ -249,7 +249,7 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-4 flex items-center md:ml-6 pr-4">
-                        <button id="login-btn" class="btn-primary px-6 py-2 rounded-md text-sm font-bold uppercase" data-action="login">
+                        <button id="login-btn" class="btn-primary px-6 py-2 rounded-md text-sm font-bold uppercase" onclick="alert('Login button clicked'); document.getElementById('login-modal').classList.remove('hidden');">
                             <i class="fas fa-user mr-2"></i> Login
                         </button>
                     </div>
@@ -1740,5 +1740,65 @@ console.log('Expected win rate:', ((1 - (wheelConfig.segments.filter(s => s.type
         testWheelResults(10);
     });
 </script>
+    
+    <script>
+        // Direct login button handler
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Setting up direct login handler');
+            const loginBtn = document.getElementById('login-btn');
+            if (loginBtn) {
+                console.log('Login button found');
+                loginBtn.addEventListener('click', function(e) {
+                    console.log('Login button clicked');
+                    e.preventDefault();
+                    const loginModal = document.getElementById('login-modal');
+                    if (loginModal) {
+                        console.log('Showing login modal');
+                        loginModal.classList.remove('hidden');
+                    } else {
+                        console.error('Login modal not found');
+                    }
+                });
+            } else {
+                console.error('Login button not found');
+            }
+        });
+    </script>
+    
+    <!-- Move modal-functions.js to the bottom of the body -->
+    <script src="static/assets/js/modal-functions.js"></script>
+    
+    <!-- Add direct inline script for testing -->
+    <script>
+        // Direct test of login functionality
+        console.log('=== TEST SCRIPT LOADED ===');
+        
+        // Wait for the page to fully load
+        window.addEventListener('load', function() {
+            console.log('Page fully loaded');
+            
+            // Get the login button
+            const loginBtn = document.getElementById('login-btn');
+            console.log('Login button found:', loginBtn);
+            
+            if (loginBtn) {
+                // Add click handler
+                loginBtn.addEventListener('click', function(e) {
+                    console.log('Login button clicked');
+                    e.preventDefault();
+                    
+                    // Get the login modal
+                    const loginModal = document.getElementById('login-modal');
+                    console.log('Login modal found:', loginModal);
+                    
+                    if (loginModal) {
+                        // Show the modal
+                        loginModal.classList.remove('hidden');
+                        console.log('Login modal shown');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
