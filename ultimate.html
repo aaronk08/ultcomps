@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Competitions | Premium Raffles for Luxury Prizes</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="/static/assets/js/modal-functions.js"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            overflow-y: scroll;
+        }
+    </style>
+    <script>
+        // Prevent automatic hash scrolling
+        if (window.location.hash) {
+            window.history.replaceState(null, null, window.location.pathname);
+        }
+        
+        // Force page to start at top
+        window.onbeforeunload = function() {
+            window.scrollTo(0, 0);
+        };
+        window.onload = function() {
+            window.scrollTo(0, 0);
+        };
+
+        // Prevent scroll restoration
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+    </script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#000000',
+                        secondary: '#e30613',
+                        accent: '#d4af37',
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        title: ['Bebas Neue', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: white;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(227,6,19,0.6) 100%);
+        }
+        
+        .countdown-box {
+            background: rgba(0, 0, 0, 0.7);
+            border: 2px solid #e30613;
+        }
+        
+        .prize-card {
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+        
+        .prize-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(227, 6, 19, 0.3);
+            border-color: #e30613;
+        }
+        
+        .btn-primary {
+            background: #e30613;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #c00511;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(227, 6, 19, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #d4af37;
+            transition: all 0.3s ease;
+            color: #000;
+        }
+        
+        .btn-secondary:hover {
+            background: #c19b2e;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .ticket-counter {
+            border: 1px solid #e30613;
+        }
+        
+        .marquee {
+            animation: marquee 20s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .winner-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #d4af37;
+            color: #000;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden">
+        <div class="bg-primary border-2 border-secondary rounded-lg p-8 w-full max-w-sm relative shadow-2xl">
+            <button id="close-login-modal" class="absolute top-2 right-2 text-secondary text-2xl font-bold hover:text-accent" aria-label="Close login form">&times;</button>
+            <h2 class="text-2xl font-title font-bold mb-6 text-accent text-center tracking-wide">Login</h2>
+            <form id="login-form" novalidate action="javascript:void(0)" onsubmit="return false;">
+                <div class="mb-4">
+                    <label for="login-identifier" class="block text-sm font-medium text-accent mb-1">Username or Email</label>
+                    <input type="text" id="login-identifier" name="login_identifier" placeholder="Enter your username or email" class="w-full p-3 bg-black border border-secondary rounded text-white focus:outline-none" required>
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-accent mb-1">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Your password" class="w-full p-3 bg-black border border-secondary rounded text-white focus:outline-none" required>
+                </div>
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-secondary border-gray-300 rounded focus:ring-secondary">
+                        <label for="remember-me" class="ml-2 block text-sm text-gray-300">Remember me</label>
+                    </div>
+                    <a href="#" id="show-forgot-modal" class="text-sm text-accent hover:underline">Forgot password?</a>
+                </div>
+                <button type="submit" class="btn-primary w-full py-3 rounded-md text-lg font-bold uppercase transition-all">
+                    Login
+                </button>
+            </form>
+            <p class="mt-6 text-center text-sm text-gray-400">
+                Don't have an account? <a href="#" id="show-signup-modal" class="text-accent hover:underline">Sign up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden">
+        <div class="bg-primary border-2 border-accent rounded-lg p-8 w-full max-w-sm relative shadow-2xl">
+            <button id="close-signup-modal" class="absolute top-2 right-2 text-accent text-2xl font-bold hover:text-secondary" aria-label="Close sign up form">&times;</button>
+            <h2 class="text-2xl font-title font-bold mb-6 text-accent text-center tracking-wide">Sign Up</h2>
+            <form id="signup-form" novalidate action="javascript:void(0)" onsubmit="return false;">
+                <div class="mb-4">
+                    <label for="signup-username" class="block text-sm font-medium text-accent mb-1">Username</label>
+                    <input type="text" id="signup-username" name="username" placeholder="Choose a username" class="w-full p-3 bg-black border border-accent rounded text-white focus:outline-none focus:ring-2 focus:ring-accent" required>
+                </div>
+                <div class="mb-4">
+                    <label for="signup-email" class="block text-sm font-medium text-accent mb-1">Email</label>
+                    <input type="email" id="signup-email" name="email" placeholder="Your email" class="w-full p-3 bg-black border border-accent rounded text-white focus:outline-none focus:ring-2 focus:ring-accent" required>
+                </div>
+                <div class="mb-4">
+                    <label for="signup-password" class="block text-sm font-medium text-accent mb-1">Password</label>
+                    <input type="password" id="signup-password" name="password" placeholder="Create a password" class="w-full p-3 bg-black border border-accent rounded text-white focus:outline-none focus:ring-2 focus:ring-accent" required>
+                </div>
+                <div class="mb-6">
+                    <label for="signup-password2" class="block text-sm font-medium text-accent mb-1">Confirm Password</label>
+                    <input type="password" id="signup-password2" name="password2" placeholder="Confirm password" class="w-full p-3 bg-black border border-accent rounded text-white focus:outline-none focus:ring-2 focus:ring-accent" required>
+                </div>
+                <button type="submit" class="btn-secondary w-full py-3 rounded-md text-lg font-bold uppercase transition-all">
+                    Sign Up
+                </button>
+            </form>
+            <p class="mt-6 text-center text-sm text-gray-400">
+                Already have an account? <a href="#" id="show-login-from-signup" class="text-accent hover:underline">Login</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgot-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden">
+        <div class="bg-primary border-2 border-accent rounded-lg p-8 w-full max-w-sm relative shadow-2xl">
+            <button id="close-forgot-modal" class="absolute top-2 right-2 text-accent text-2xl font-bold hover:text-secondary" aria-label="Close forgot password form">&times;</button>
+            <h2 class="text-2xl font-title font-bold mb-6 text-accent text-center tracking-wide">Reset Password</h2>
+            <form id="forgot-form" action="javascript:void(0)" onsubmit="return false;">
+                <div class="mb-4">
+                    <label for="forgot-email" class="block text-sm font-medium text-accent mb-1">Email</label>
+                    <input type="email" id="forgot-email" name="email" placeholder="Your email" class="w-full p-3 bg-black border border-accent rounded text-white focus:outline-none focus:ring-2 focus:ring-accent" required>
+                </div>
+                <button type="submit" class="btn-secondary w-full py-3 rounded-md text-lg font-bold uppercase transition-all">
+                    Send Reset Link
+                </button>
+            </form>
+            <p class="mt-6 text-center text-sm text-gray-400">
+                Remember your password? <a href="#" class="text-accent hover:underline" data-action="login">Back to Login</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-primary border-b border-gray-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center pl-[5px]">
+                    <!-- Dropdown Menu -->
+                    <div class="relative mr-3">
+                        <button id="dropdown-button" class="text-white hover:text-secondary focus:outline-none">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <div id="dropdown-menu" class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-gray-900 ring-1 ring-black ring-opacity-5 hidden">
+                            <div class="py-1" role="menu" aria-orientation="vertical">
+                                <a href="#" class="block px-4 py-2 text-sm text-white hover:bg-gray-800 hover:text-secondary" role="menuitem" id="open-wheel-modal">
+                                    <i class="fas fa-dharmachakra mr-2"></i> Wheel Spins
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="#" class="text-white text-2xl font-title tracking-wider hover:text-secondary transition-colors duration-300" id="logo-link">ULTIMATE <span class="text-secondary">COMPETITIONS</span></a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-8 flex items-center space-x-12">
+                        <a href="#current" class="text-white hover:text-secondary px-3 py-2 text-sm font-medium">Current Raffles</a>
+                        <a href="#how" class="text-white hover:text-secondary px-3 py-2 text-sm font-medium">How It Works</a>
+                        <a href="#winners" class="text-white hover:text-secondary px-3 py-2 text-sm font-medium">Winners</a>
+                        <a href="#faq" class="text-white hover:text-secondary px-3 py-2 text-sm font-medium">FAQ</a>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6 pr-4">
+                        <button id="login-btn" class="btn-primary px-6 py-2 rounded-md text-sm font-bold uppercase" data-action="login">
+                            <i class="fas fa-user mr-2"></i> Login
+                        </button>
+                    </div>
+                </div>
+
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false" id="mobile-menu-button">
+                        <span class="sr-only">Open main menu</span>
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden bg-gray-900" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#current" class="text-white block px-3 py-2 rounded-md text-base font-medium">Current Raffles</a>
+                <a href="#how" class="text-white block px-3 py-2 rounded-md text-base font-medium">How It Works</a>
+                <a href="#winners" class="text-white block px-3 py-2 rounded-md text-base font-medium">Winners</a>
+                <a href="#faq" class="text-white block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
+                <button class="text-white block px-3 py-2 rounded-md text-base font-bold" data-action="login">
+                    <i class="fas fa-user mr-2"></i> Login
+                </button>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Announcement Bar -->
+    <div class="marquee-container">
+        <div class="marquee-track">
+            <span>🔥 LIMITED TIME OFFER: GET 2 TICKETS FOR THE PRICE OF 1 ON SELECT COMPETITIONS! 🔥</span>
+            <span>🎉 CONGRATULATIONS TO OUR LATEST WINNER: JOHN D. FROM LONDON WON A SURRON X BLACK EDITION! 🎉</span>
+            <span>⏰ ONLY 3 HOURS LEFT TO ENTER THE ROLEX SUBMARINER RAFFLE! ⏰</span>
+            <!-- Duplicate content for seamless loop -->
+            <span>🔥 LIMITED TIME OFFER: GET 2 TICKETS FOR THE PRICE OF 1 ON SELECT COMPETITIONS! 🔥</span>
+            <span>🎉 CONGRATULATIONS TO OUR LATEST WINNER: JOHN D. FROM LONDON WON A SURRON X BLACK EDITION! 🎉</span>
+            <span>⏰ ONLY 3 HOURS LEFT TO ENTER THE ROLEX SUBMARINER RAFFLE! ⏰</span>
+        </div>
+    </div>
+
+    <style>
+        .marquee-container {
+            background-color: #e30613; /* Your red "secondary" color */
+            color: white;
+            overflow: hidden;
+            white-space: nowrap;
+            font-weight: bold;
+            font-size: 0.875rem; /* text-sm */
+            text-transform: uppercase;
+            padding: 0.5rem 1rem; /* py-2 px-4 */
+            position: relative;
+        }
+
+        .marquee-track {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+        }
+
+        .marquee-track span {
+            display: inline-block;
+            margin-right: 2rem;
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+    </style>
+
+    <!-- Hero Section -->
+    <div class="relative hero-section">
+        <div class="absolute inset-0 overflow-hidden">
+            <img class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80" alt="Luxury watches">
+            <div class="absolute inset-0 hero-gradient"></div>
+        </div>
+        <div class="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+            <h1 class="text-5xl md:text-7xl font-title tracking-tight text-white text-center">
+                WIN <span class="text-secondary">LUXURY</span> FOR LESS
+            </h1>
+            <p class="mt-6 text-xl text-gray-300 max-w-3xl mx-auto text-center">
+                Enter our premium raffles for a chance to win high-end Surron bikes, gold bars, and luxury watches at unbelievable prices.
+            </p>
+            <div class="mt-10 flex justify-center">
+                <a href="#current" class="btn-primary px-8 py-4 rounded-md text-lg font-bold uppercase">
+                    Enter Now <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Current Competitions -->
+    <section class="py-16 bg-black" id="current">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-title tracking-tight text-white">
+                    CURRENT <span class="text-secondary">COMPETITIONS</span>
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-300 mx-auto">
+                    Don't miss your chance to win these incredible prizes
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Competition 1 -->
+                <div class="prize-card bg-gray-900 rounded-lg overflow-hidden relative">
+                    <div class="relative">
+                        <img class="w-full h-64 object-cover" src="http://tbgfx.co.uk/cdn/shop/files/Untitled-3_7ab87484-b133-4292-9477-b13f9adacdfc.png?v=1688230813" alt="Surron X Bike" />
+                        <div class="absolute top-4 right-3 bg-secondary text-black text-xs font-bold px-2 py-1 rounded uppercase">
+                            Hot Deal
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white">Surron X Black Edition</h3>
+                        <p class="mt-2 text-gray-300">Limited edition electric dirt bike with premium upgrades</p>
+                        
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="text-gray-400 text-sm">Ticket Price</span>
+                                <p class="text-xl font-bold text-white">£5.99</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm">Total Tickets</span>
+                                <p class="text-xl font-bold text-white">5,000</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 bg-gray-800 rounded-lg p-4 countdown-box">
+                            <p class="text-gray-300 text-sm mb-2">Time remaining to enter:</p>
+                            <div class="flex justify-between text-center" id="countdown1">
+                                <div>
+                                    <span class="text-2xl font-bold text-white days">03</span>
+                                    <span class="block text-xs text-gray-400">Days</span>
+                                </div>
+                                <div>
+                                    <span class="text-2xl font-bold text-white hours">12</span>
+                                    <span class="block text-xs text-gray-400">Hours</span>
+                                </div>
+                                <div>
+                                    <span class="text-2xl font-bold text-white minutes">45</span>
+                                    <span class="block text-xs text-gray-400">Minutes</span>
+                                </div>
+                                <div>
+                                    <span class="text-2xl font-bold text-white seconds">30</span>
+                                    <span class="block text-xs text-gray-400">Seconds</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex items-center">
+                            <div class="flex-1 mr-4">
+                                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                    <div class="bg-secondary h-2.5 rounded-full" style="width: 75%"></div>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">75% sold (3,750/5,000 tickets)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button class="btn-primary w-full py-3 rounded-md text-lg font-bold uppercase">
+                                Enter Now <i class="fas fa-ticket-alt ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Competition 2 -->
+                <div class="prize-card bg-gray-900 rounded-lg overflow-hidden relative">
+                    <div class="relative">
+                        <img class="w-full h-64 object-cover" src="https://7ccf0daf56097be149a4.b-cdn.net/wp-content/uploads/2021/06/Rolex_Submariner_40mm_Steel_and_Gold_Watch_Ref_16613.jpeg" alt="Rolex Submariner" />
+                        <div class="absolute top-4 right-3 bg-accent text-black text-xs font-bold px-2 py-1 rounded uppercase">
+                            Premium
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white">Rolex Submariner</h3>
+                        <p class="mt-2 text-gray-300">Iconic luxury dive watch with black dial and ceramic bezel</p>
+                        
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="text-gray-400 text-sm">Ticket Price</span>
+                                <p class="text-xl font-bold text-white">£9.99</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm">Total Tickets</span>
+                                <p class="text-xl font-bold text-white">2,500</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 bg-gray-800 rounded-lg p-4 countdown-box">
+                            <p class="text-gray-300 text-sm mb-2">Time remaining to enter:</p>
+                            <div class="flex justify-between text-center" id="countdown2">
+                                <div>
+                                    <span class="text-2xl font-bold text-white days">01</span>
+                                    <span class="block text-xs text-gray-400">Days</span>
+                                </div>
+                                <div>
+                                    <span class="text-2xl font-bold text-white hours">06</span>
+                                    <span class="block text-xs text-gray-400">Hours</span>
+                                </div>
+                                <div>
+                                    <span class="text-2xl font-bold text-white minutes">30</span>
+                                    <span class="block text-xs text-gray-400">Minutes</span>
+                                </div>
+                                <div>
+                                    <span class="text-2xl font-bold text-white seconds">15</span>
+                                    <span class="block text-xs text-gray-400">Seconds</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex items-center">
+                            <div class="flex-1 mr-4">
+                                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                    <div class="bg-secondary h-2.5 rounded-full" style="width: 45%"></div>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">45% sold (1,125/2,500 tickets)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button class="btn-primary w-full py-3 rounded-md text-lg font-bold uppercase">
+                                Enter Now <i class="fas fa-ticket-alt ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Competition 3 -->
+                <div class="prize-card bg-gray-900 rounded-lg overflow-hidden relative">
+                    <div class="relative">
+                        <img class="w-full h-64 object-cover mb-4" src="https://media.istockphoto.com/id/1419548668/photo/fine-gold-bar-1kg-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=61Rrv9Ir3PQxrQc5KxoiYTDwreYQ9GXFQfbtwEssZPs=" alt="1kg Gold Bar" />
+                        <div class="absolute top-4 right-3 text-black text-xs font-bold px-2 py-1 rounded uppercase" style="background-color: #50C878;">
+                            Exclusive
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white">1kg Gold Bar</h3>
+                        <p class="mt-2 text-gray-300">Pure 24k gold investment bar from LBMA approved refiner</p>
+                        
+                        <div class="mt-4 flex justify-between items-center">
+                            <div>
+                                <span class="text-gray-400 text-sm">Ticket Price</span>
+                                <p class="text-xl font-bold text-white">£7.99</p>
+                            </div>
+                            <div>
+                                <span class="text-gray-400 text-sm">Total Tickets</span>
+                                <p class="text-xl font-bold text-white">3,000</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 bg-gray-800 rounded-lg p-4 countdown-box">
+                            <p class="text-gray-300 text-sm mb-2">Time remaining to enter:</p>
+                            <div class="flex justify-between text-center" id="countdown3">
+                                <div>
+                                    <span class="text-2xl font-bold text-white days">05</span>
+                                    <span class="block text-xs text-gray-400">Days</span>
+                                </div>
+                                <div>
+                                    <span class="text-2xl font-bold text-white hours">18</span>
+                                    <span class="block text-xs text-gray-400">Hours</span>
+                                </div>
+                                <div>
+                                    <span class="text-2xl font-bold text-white minutes">22</span>
+                                    <span class="block text-xs text-gray-400">Minutes</span>
+                                </div>
+                                <div>
+                                    <span class="text-2xl font-bold text-white seconds">10</span>
+                                    <span class="block text-xs text-gray-400">Seconds</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex items-center">
+                            <div class="flex-1 mr-4">
+                                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                                    <div class="bg-secondary h-2.5 rounded-full" style="width: 60%"></div>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">60% sold (1,800/3,000 tickets)</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <button class="btn-primary w-full py-3 rounded-md text-lg font-bold uppercase">
+                                Enter Now <i class="fas fa-ticket-alt ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works -->
+    <section class="py-16 bg-gray-900" id="how">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-title tracking-tight text-white">
+                    HOW IT <span class="text-secondary">WORKS</span>
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-300 mx-auto">
+                    Win luxury items in just 3 simple steps
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-800 rounded-lg p-8 text-center">
+                    <div class="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl font-bold">1</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Choose Your Prize</h3>
+                    <p class="text-gray-300">Browse our exclusive selection of luxury prizes and select the one you want to win.</p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-lg p-8 text-center">
+                    <div class="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl font-bold">2</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Purchase Tickets</h3>
+                    <p class="text-gray-300">Buy tickets for your chosen competition. The more tickets you buy, the better your chances!</p>
+                </div>
+                
+                <div class="bg-gray-800 rounded-lg p-8 text-center">
+                    <div class="w-20 h-20 bg-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl font-bold">3</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Wait for the Draw</h3>
+                    <p class="text-gray-300">Once all tickets are sold, we'll draw the winner live on our social media channels.</p>
+                </div>
+            </div>
+            
+            <div class="mt-12 bg-gray-800 rounded-lg p-8">
+                <div class="md:flex items-center">
+                    <div class="md:w-1/2 mb-6 md:mb-0">
+                        <h3 class="text-2xl font-bold text-white mb-4">Why Choose Ultimate Competitions?</h3>
+                        <ul class="space-y-3 text-gray-300">
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-secondary mr-2 mt-1"></i>
+                                <span>Guaranteed winners for every competition</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-secondary mr-2 mt-1"></i>
+                                <span>100% transparent live draws</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-secondary mr-2 mt-1"></i>
+                                <span>Fast, secure delivery of prizes</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-check text-secondary mr-2 mt-1"></i>
+                                <span>24/7 customer support</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="md:w-1/2 md:pl-12">
+                        <div class="bg-black p-6 rounded-lg border border-gray-700">
+                            <h4 class="text-xl font-bold text-white mb-4">Ready to Win?</h4>
+                            <p class="text-gray-300 mb-6">Join thousands of players who have already won luxury items worth thousands!</p>
+                            <button class="btn-primary w-full py-3 rounded-md text-lg font-bold uppercase">
+                                Join Now <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Recent Winners -->
+    <section class="py-16 bg-black" id="winners">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-title tracking-tight text-white">
+                    RECENT <span class="text-secondary">WINNERS</span>
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-300 mx-auto">
+                    See what our lucky winners have to say
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gray-900 rounded-lg p-6 relative">
+                    <div class="winner-badge">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 rounded-full bg-gray-700 overflow-hidden mr-4">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Winner" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold">Sarah K.</h4>
+                            <p class="text-gray-400 text-sm">London, UK</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex text-accent">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">"I couldn't believe it when I won the Rolex watch! The whole process was so easy and transparent. I'll definitely be entering more competitions!"</p>
+                    <div class="mt-4 pt-4 border-t border-gray-800">
+                        <p class="text-sm text-gray-400">Won: Rolex Datejust 41</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-lg p-6 relative">
+                    <div class="winner-badge">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 rounded-full bg-gray-700 overflow-hidden mr-4">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Winner" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold">Michael T.</h4>
+                            <p class="text-gray-400 text-sm">Manchester, UK</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex text-accent">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">"The Surron X bike is absolutely incredible! I've been wanting one for ages but couldn't afford it. Now I've got the top spec model for just £20 in tickets!"</p>
+                    <div class="mt-4 pt-4 border-t border-gray-800">
+                        <p class="text-sm text-gray-400">Won: Surron X Black Edition</p>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-900 rounded-lg p-6 relative">
+                    <div class="winner-badge">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="flex items-center mb-4">
+                        <div class="w-16 h-16 rounded-full bg-gray-700 overflow-hidden mr-4">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Winner" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold">Emma L.</h4>
+                            <p class="text-gray-400 text-sm">Birmingham, UK</p>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="flex text-accent">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">"Winning the 1kg gold bar was a dream come true. The delivery was fast and the gold was exactly as described. Ultimate Competitions is 100% legit!"</p>
+                    <div class="mt-4 pt-4 border-t border-gray-800">
+                        <p class="text-sm text-gray-400">Won: 1kg Gold Bar</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <button class="btn-secondary px-8 py-3 rounded-md text-lg font-bold uppercase">
+                    View All Winners <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ Section -->
+    <section class="py-16 bg-gray-900" id="faq">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-title tracking-tight text-white">
+                    FREQUENTLY <span class="text-secondary">ASKED QUESTIONS</span>
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-300 mx-auto">
+                    Everything you need to know about our competitions
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Left Column -->
+                <div class="space-y-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-white mb-3">How do the competitions work?</h3>
+                        <p class="text-gray-300 text-base">Our competitions are simple: choose a prize you'd like to win, purchase tickets, and wait for the draw. The more tickets you buy, the better your chances of winning!</p>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-white mb-3">How are winners selected?</h3>
+                        <p class="text-gray-300 text-base">Winners are selected through a live draw that's streamed on our social media channels. We use a random number generator to ensure complete fairness and transparency.</p>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-white mb-3">How do I receive my prize if I win?</h3>
+                        <p class="text-gray-300 text-base">Winners are notified immediately after the draw. We arrange secure delivery of your prize, with full insurance and tracking. Most prizes are delivered within 7-14 days.</p>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="space-y-6">
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-white mb-3">Are the competitions legal?</h3>
+                        <p class="text-gray-300 text-base">Yes, all our competitions are fully licensed and regulated. We operate under UK gaming laws and ensure complete compliance with all relevant regulations.</p>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-white mb-3">Can I get a refund on my tickets?</h3>
+                        <p class="text-gray-300 text-base">Tickets are non-refundable once purchased. However, if a competition is canceled for any reason, all ticket purchases will be fully refunded.</p>
+                    </div>
+                    
+                    <div class="bg-gray-800 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-white mb-3">What happens if not all tickets are sold?</h3>
+                        <p class="text-gray-300 text-base">If a competition doesn't sell all its tickets, we have two options: extend the competition period or proceed with the draw and adjust the prize value proportionally.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-gray-300 mb-4">Still have questions? We're here to help!</p>
+                <a href="#" class="btn-secondary px-8 py-3 rounded-md text-lg font-bold uppercase inline-block">
+                    Contact Support <i class="fas fa-headset ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter -->
+    <section class="py-16 bg-secondary">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="md:flex items-center justify-between">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h2 class="text-3xl font-title tracking-tight text-white">
+                        DON'T MISS OUT ON NEW COMPETITIONS!
+                    </h2>
+                    <p class="mt-4 text-white">
+                        Subscribe to our newsletter and be the first to know about new raffles, special offers, and winner announcements.
+                    </p>
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <form class="flex">
+                        <input type="email" placeholder="Your email address" class="subscribe-input px-4 py-3 w-full rounded-l-md focus:outline-none text-black">
+                        <button type="submit" class="subscribe-btn bg-black text-white px-6 py-3 rounded-r-md font-bold uppercase">
+                            Subscribe
+                        </button>
+                    </form>
+                    <p class="mt-2 text-xs text-white opacity-80">
+                        We respect your privacy. Unsubscribe at any time.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Ultimate Competitions</h3>
+                    <p class="text-gray-400 text-sm">
+                        Your premier destination for luxury raffles and competitions. Win high-end prizes at unbelievable prices.
+                    </p>
+                    <div class="mt-4 flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white text-sm">Home</a></li>
+                        <li><a href="#current" class="text-gray-400 hover:text-white text-sm">Current Competitions</a></li>
+                        <li><a href="#winners" class="text-gray-400 hover:text-white text-sm">Recent Winners</a></li>
+                        <li><a href="#how" class="text-gray-400 hover:text-white text-sm">How It Works</a></li>
+                        <li><a href="#faq" class="text-gray-400 hover:text-white text-sm">FAQ</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <!-- Navigation Link -->
+<li>
+  <a href="#" id="cookie-policy-link" class="text-gray-400 hover:text-white text-sm">Cookie Policy</a>
+</li>
+
+<!-- Cookie Policy Modal -->
+<div id="cookie-policy-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+  <div class="bg-white text-black w-full max-w-md p-6 rounded-lg shadow-lg relative">
+    <h2 class="text-xl font-bold mb-4">Cookie Policy</h2>
+    <p class="text-sm mb-2 leading-relaxed">
+      We use cookies to enhance your experience on our website. Here's what we do with them:
+    </p>
+    <ul class="list-disc pl-5 text-sm space-y-1 mb-4">
+      <li>Cookies help us analyze site traffic and improve functionality.</li>
+      <li>They are used to personalize content and ads based on your activity.</li>
+      <li>We do not store sensitive personal information in cookies.</li>
+      <li>You can disable cookies in your browser settings at any time, but this may affect your site experience.</li>
+      <li>By continuing to browse, you consent to the use of cookies on this site.</li>
+    </ul>
+    <button id="close-cookie-policy" class="absolute top-2 right-3 text-black hover:text-red-600 text-lg font-bold">&times;</button>
+  </div>
+</div>
+
+<!-- Script -->
+<script>
+  const cookiePolicyLink = document.getElementById('cookie-policy-link');
+  const cookiePolicyModal = document.getElementById('cookie-policy-modal');
+  const closeCookiePolicy = document.getElementById('close-cookie-policy');
+
+  cookiePolicyLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    cookiePolicyModal.classList.remove('hidden');
+  });
+
+  closeCookiePolicy.addEventListener('click', function() {
+    cookiePolicyModal.classList.add('hidden');
+  });
+
+  window.addEventListener('click', function(e) {
+    if (e.target === cookiePolicyModal) {
+      cookiePolicyModal.classList.add('hidden');
+    }
+  });
+</script>
+
+                        <!-- Navigation Link -->
+<li>
+  <a href="#" id="privacy-link" class="text-gray-400 hover:text-white text-sm">Privacy Policy</a>
+</li>
+
+<!-- Privacy Modal -->
+<div id="privacy-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+  <div class="bg-white text-black w-full max-w-md p-6 rounded-lg shadow-lg relative">
+    <h2 class="text-xl font-bold mb-4">Privacy Policy</h2>
+    <p class="text-sm mb-2 leading-relaxed">
+      We value your privacy. This policy outlines how we collect, use, and protect your data:
+    </p>
+    <ul class="list-disc pl-5 text-sm space-y-1 mb-4">
+      <li>We only collect data necessary for account setup and competition entry.</li>
+      <li>Your personal information is never shared with third parties without consent.</li>
+      <li>We use secure technologies to protect all user data.</li>
+      <li>Cookies may be used to improve site experience.</li>
+      <li>You can request your data or deletion of your account at any time.</li>
+    </ul>
+    <button id="close-privacy" class="absolute top-2 right-3 text-black hover:text-red-600 text-lg font-bold">&times;</button>
+  </div>
+</div>
+
+<!-- Script -->
+<script>
+  const privacyLink = document.getElementById('privacy-link');
+  const privacyModal = document.getElementById('privacy-modal');
+  const closePrivacy = document.getElementById('close-privacy');
+
+  privacyLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    privacyModal.classList.remove('hidden');
+  });
+
+  closePrivacy.addEventListener('click', function() {
+    privacyModal.classList.add('hidden');
+  });
+
+  window.addEventListener('click', function(e) {
+    if (e.target === privacyModal) {
+      privacyModal.classList.add('hidden');
+    }
+  });
+</script>
+
+                        <!-- Navigation Link -->
+<li>
+  <a href="#" id="terms-link" class="text-gray-400 hover:text-white text-sm">Terms of Service</a>
+</li>
+
+<!-- Terms Modal -->
+<div id="terms-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+  <div class="bg-white text-black w-full max-w-md p-6 rounded-lg shadow-lg relative">
+    <h2 class="text-xl font-bold mb-4">Terms of Service</h2>
+    <p class="text-sm mb-2 leading-relaxed">
+      By using Ultimate Competitions, you agree to the following terms:
+    </p>
+    <ul class="list-disc pl-5 text-sm space-y-1 mb-4">
+      <li>You must be 18+ to enter competitions.</li>
+      <li>Each competition has specific rules displayed on its page.</li>
+      <li>All entries are final with no refunds unless the competition is canceled.</li>
+      <li>Winners are selected randomly via live draw and notified immediately.</li>
+      <li>Prizes are as described and cannot be exchanged for cash unless stated.</li>
+      <li>We reserve the right to refuse entries or cancel competitions at our discretion.</li>
+    </ul>
+    <button id="close-terms" class="absolute top-2 right-3 text-black hover:text-red-600 text-lg font-bold">&times;</button>
+  </div>
+</div>
+
+<!-- Script -->
+<script>
+  const termsLink = document.getElementById('terms-link');
+  const termsModal = document.getElementById('terms-modal');
+  const closeTerms = document.getElementById('close-terms');
+
+  termsLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    termsModal.classList.remove('hidden');
+  });
+
+  closeTerms.addEventListener('click', function() {
+    termsModal.classList.add('hidden');
+  });
+
+  window.addEventListener('click', function(e) {
+    if (e.target === termsModal) {
+      termsModal.classList.add('hidden');
+    }
+  });
+</script>
+
+                        <!-- Navigation Link -->
+<li>
+  <a href="#" id="responsible-link" class="text-gray-400 hover:text-white text-sm">Responsible Gaming</a>
+</li>
+
+<!-- Modal Overlay -->
+<div id="responsible-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+  <div class="bg-white text-black w-full max-w-md p-6 rounded-lg shadow-lg relative">
+    <h2 class="text-xl font-bold mb-4">Responsible Gaming</h2>
+    <p class="text-sm mb-4 leading-relaxed">
+      Ultimate Competitions promotes responsible gaming. Please play within your means. If you feel you may be spending too much, take a break or seek support through services like <a href="https://www.begambleaware.org" target="_blank" class="text-blue-600 underline">BeGambleAware.org</a>. You must be 18 or older to participate. Know your limits, and always play responsibly.
+    </p>
+    <button id="close-responsible" class="absolute top-2 right-3 text-black hover:text-red-600 text-lg font-bold">&times;</button>
+  </div>
+</div>
+
+<!-- Script -->
+<script>
+  const openLink = document.getElementById('responsible-link');
+  const modal = document.getElementById('responsible-modal');
+  const closeBtn = document.getElementById('close-responsible');
+
+  openLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    modal.classList.remove('hidden');
+  });
+
+  closeBtn.addEventListener('click', function() {
+    modal.classList.add('hidden');
+  });
+
+  window.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+    }
+  });
+</script>
+
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Contact Us</h3>
+                    <ul class="space-y-2 text-gray-400 text-sm">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mr-2 mt-1"></i>
+                            <span>support@ultimatecompetitions.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mr-2 mt-1"></i>
+                            <span>+44 123 456 7890</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mr-2 mt-1"></i>
+                            <span>123 Luxury Lane, London, UK</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">
+                    © Ultimate Competitions. All rights reserved.
+                </p>
+                <div class="flex space-x-4">
+                    <img src="https://via.placeholder.com/50x30" alt="Payment Method" class="h-8">
+                    <img src="https://via.placeholder.com/50x30" alt="Payment Method" class="h-8">
+                    <img src="https://via.placeholder.com/50x30" alt="Payment Method" class="h-8">
+                    <img src="https://via.placeholder.com/50x30" alt="Payment Method" class="h-8">
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Cookie Consent -->
+    <div class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 shadow-lg z-50 hidden" id="cookie-consent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="md:flex items-center justify-between">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-sm">
+                        We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
+                        <a href="#" class="text-secondary underline" id="cookie-policy-link">Learn more</a>
+                    </p>
+                </div>
+                <div class="flex space-x-4">
+                    <button id="cookie-accept" class="btn-primary px-4 py-2 rounded-md text-sm font-bold">
+                        Accept
+                    </button>
+                    <button id="cookie-decline" class="bg-gray-700 px-4 py-2 rounded-md text-sm font-bold">
+                        Decline
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Dropdown menu toggle
+        const dropdownButton = document.getElementById('dropdown-button');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        
+        dropdownButton.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('hidden');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+        
+        // Countdown timers
+        function updateCountdown(endDate, elementId) {
+            const now = new Date().getTime();
+            const distance = endDate - now;
+            
+            if (distance < 0) {
+                document.getElementById(elementId).innerHTML = '<div class="text-xl font-bold text-secondary">COMPETITION ENDED</div>';
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.querySelector(`#${elementId} .days`).textContent = days.toString().padStart(2, '0');
+            document.querySelector(`#${elementId} .hours`).textContent = hours.toString().padStart(2, '0');
+            document.querySelector(`#${elementId} .minutes`).textContent = minutes.toString().padStart(2, '0');
+            document.querySelector(`#${elementId} .seconds`).textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // Set end dates for competitions (3 days, 1 day, and 5 days from now)
+        const endDate1 = new Date();
+        endDate1.setDate(endDate1.getDate() + 3);
+        endDate1.setHours(12, 45, 30, 0);
+        
+        const endDate2 = new Date();
+        endDate2.setDate(endDate2.getDate() + 1);
+        endDate2.setHours(6, 30, 15, 0);
+        
+        const endDate3 = new Date();
+        endDate3.setDate(endDate3.getDate() + 5);
+        endDate3.setHours(18, 22, 10, 0);
+        
+        // Update countdowns every second
+        setInterval(() => {
+            updateCountdown(endDate1, 'countdown1');
+            updateCountdown(endDate2, 'countdown2');
+            updateCountdown(endDate3, 'countdown3');
+        }, 1000);
+        
+        // Initial update
+        updateCountdown(endDate1, 'countdown1');
+        updateCountdown(endDate2, 'countdown2');
+        updateCountdown(endDate3, 'countdown3');
+    </script>
+
+<!-- Wheel Spins Modal -->
+<div id="wheel-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden">
+    <div class="relative" style="width: 500px;">
+        <button id="close-wheel-modal" class="absolute top-2 right-2 text-secondary text-2xl font-bold hover:text-accent z-10" aria-label="Close wheel">&times;</button>
+        
+        <!-- Wheel container fixed at top -->
+        <div class="wheel-container">
+            <div class="wheel-pointer">
+                <div class="triangle-up"></div>
+            </div>
+            <canvas id="wheel" width="500" height="500"></canvas>
+        </div>
+        
+        <!-- Spin button fixed below wheel -->
+        <div class="text-center mt-8">
+            <button id="spin-button" class="btn-primary px-8 py-4 rounded-md text-lg font-bold uppercase">
+                SPIN TO WIN <i class="fas fa-sync-alt ml-2"></i>
+            </button>
+        </div>
+        
+        <!-- Spin history container with fixed height -->
+        <div id="spin-history" class="mt-4 p-4 text-center bg-black bg-opacity-50 rounded-lg" style="height: 120px;">
+            <h3 class="text-white font-bold mb-2">Spin History:</h3>
+            <div id="spin-results" class="text-white overflow-y-auto" style="height: 80px;"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .wheel-container {
+        position: relative;
+    }
+
+    .wheel-pointer {
+        position: absolute;
+        top: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+    }
+
+    .triangle-up {
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 30px solid #d4af37;
+        filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+    }
+
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background-color: #e30613;
+        opacity: 0;
+        z-index: 1000;
+    }
+
+    @keyframes confetti-fall {
+        0% {
+            transform: translateY(-100vh) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(100vh) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    #spin-results {
+        scrollbar-width: thin;
+        scrollbar-color: #e30613 #1a1a1a;
+    }
+
+    #spin-results::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #spin-results::-webkit-scrollbar-track {
+        background: #1a1a1a;
+        border-radius: 4px;
+    }
+
+    #spin-results::-webkit-scrollbar-thumb {
+        background-color: #e30613;
+        border-radius: 4px;
+    }
+
+    .spin-result {
+        padding: 4px 0;
+    }
+</style>
+
+<script>
+    // Initialize wheel
+    const canvas = document.getElementById('wheel');
+    const ctx = canvas.getContext('2d');
+    let spinCount = 0;
+    let currentRotation = 0;
+    let isSpinning = false;
+
+    // Load center logo image
+    const centerLogo = new Image();
+    centerLogo.crossOrigin = "anonymous";
+    centerLogo.src = 'https://scontent.flba1-1.fna.fbcdn.net/v/t39.30808-6/482263708_122111700776771441_4778269479880295807_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=Y-GyNFKDzyIQ7kNvwE4dRXM&_nc_oc=AdkISSdFReu5KxyJ5Yu4X-dUcRHl6_SATPJNDYVrBL-u7kCKeEAnp-ggG63MrcEWfA77p5i9zE79-aV2wOTIwdHL&_nc_zt=23&_nc_ht=scontent.flba1-1.fna&_nc_gid=wssQrS5jsoHvxQMlrcio4g&oh=00_AfJajugRn5oRPhYU8ZCp322aPjVYDP5zez8LELWAjdfb-w&oe=682FA415&dl=1';
+    centerLogo.onload = function() {
+        drawWheel();
+    };
+
+    // Modified wheel configuration to ensure £12,000-£16,000 total payout per 10,000 spins
+    const wheelConfig = {
+    segments: [
+        { text: '🏴󠁧󠁢󠁥󠁮󠁧󠁿', color: '#e30613', type: 'flag', country: 'England', value: 10000, probability: 0.000008, prizeType: 'cash' }, // Slightly increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced from 0.041257
+        { text: '🇫🇷', color: '#e30613', type: 'flag', country: 'France', value: 5000, probability: 0.000025, prizeType: 'cash' }, // Slightly increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇧🇷', color: '#e30613', type: 'flag', country: 'Brazil', value: 1000, probability: 0.000060, prizeType: 'cash' }, // Increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇪🇸', color: '#e30613', type: 'flag', country: 'Spain', value: 750, probability: 0.000200, prizeType: 'cash' }, // Increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇩🇪', color: '#e30613', type: 'flag', country: 'Germany', value: 500, probability: 0.000250, prizeType: 'cash' }, // Increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇦🇷', color: '#e30613', type: 'flag', country: 'Argentina', value: 250, probability: 0.000500, prizeType: 'cash' }, // Increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇵🇹', color: '#e30613', type: 'flag', country: 'Portugal', value: 100, probability: 0.001000, prizeType: 'cash' }, // Increased significantly
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇮🇹', color: '#e30613', type: 'flag', country: 'Italy', value: 50, probability: 0.002000, prizeType: 'cash' }, // Increased significantly
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇳🇱', color: '#e30613', type: 'flag', country: 'Netherlands', value: 25, probability: 0.004000, prizeType: 'cash' }, // Increased significantly
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇧🇪', color: '#e30613', type: 'flag', country: 'Belgium', value: 10, probability: 0.012000, prizeType: 'cash' }, // Increased significantly
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇭🇷', color: '#e30613', type: 'flag', country: 'Croatia', value: 5, probability: 0.025000, prizeType: 'credit' }, // Increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇺🇾', color: '#e30613', type: 'flag', country: 'Uruguay', value: 2, probability: 0.045000, prizeType: 'credit' }, // Increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇨🇭', color: '#e30613', type: 'flag', country: 'Switzerland', value: 1, probability: 0.085000, prizeType: 'credit' }, // Increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇩🇰', color: '#e30613', type: 'flag', country: 'Denmark', value: 0.5, probability: 0.125000, prizeType: 'credit' }, // Increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 }, // Reduced
+        { text: '🇹🇷', color: '#e30613', type: 'flag', country: 'Turkey', value: 0.5, probability: 0.125000, prizeType: 'credit' }, // Increased
+        { text: 'X', color: '#1a1a1a', type: 'x', value: 0, probability: 0.0325 } // Reduced
+    ],
+    centerX: 250,
+    centerY: 250,
+    radius: 200,
+    lineWidth: 2,
+    fontSize: 35
+};
+
+    function drawWheel() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const segmentAngle = (2 * Math.PI) / wheelConfig.segments.length;
+        
+        // Draw segments
+        wheelConfig.segments.forEach((segment, index) => {
+            const startAngle = index * segmentAngle + currentRotation;
+            const endAngle = (index + 1) * segmentAngle + currentRotation;
+            
+            // Draw segment
+            ctx.beginPath();
+            ctx.moveTo(wheelConfig.centerX, wheelConfig.centerY);
+            ctx.arc(wheelConfig.centerX, wheelConfig.centerY, wheelConfig.radius, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fillStyle = segment.color;
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Draw content
+            const midAngle = (startAngle + endAngle) / 2;
+            const contentRadius = wheelConfig.radius * 0.7;
+            const contentX = wheelConfig.centerX + Math.cos(midAngle) * contentRadius;
+            const contentY = wheelConfig.centerY + Math.sin(midAngle) * contentRadius;
+            
+            ctx.save();
+            ctx.translate(contentX, contentY);
+            ctx.rotate(midAngle + Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            if (segment.type === 'x') {
+                ctx.beginPath();
+                ctx.moveTo(-12, -12);
+                ctx.lineTo(12, 12);
+                ctx.moveTo(12, -12);
+                ctx.lineTo(-12, 12);
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+            } else {
+                ctx.font = `${wheelConfig.fontSize}px Arial`;
+                ctx.fillText(segment.text, 0, 0);
+            }
+            
+            ctx.restore();
+        });
+
+        // Draw center logo
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(wheelConfig.centerX, wheelConfig.centerY, 80, 0, 2 * Math.PI); // Reverted from 100 to 80
+        ctx.fillStyle = '#000000';
+        ctx.fill();
+        ctx.strokeStyle = '#e30613';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        
+        // Draw the image in the center
+        if (centerLogo.complete) {
+            // Create a circular clipping path
+            ctx.beginPath();
+            ctx.arc(wheelConfig.centerX, wheelConfig.centerY, 77, 0, 2 * Math.PI); // Reverted from 97 to 77
+            ctx.clip();
+            
+            // Calculate dimensions to maintain aspect ratio
+            const size = 154; // 2 * 77 (radius - 3px for border)
+            const scale = Math.max(size / centerLogo.width, size / centerLogo.height);
+            const width = centerLogo.width * scale;
+            const height = centerLogo.height * scale;
+            
+            // Enable high-quality image rendering
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            
+            // Draw the image centered
+            ctx.drawImage(
+                centerLogo,
+                wheelConfig.centerX - width/2,
+                wheelConfig.centerY - height/2,
+                width,
+                height
+            );
+        }
+        ctx.restore();
+    }
+
+    // Add formatPrize function
+    function formatPrize(value, prizeType) {
+        if (prizeType === 'credit') {
+            if (value === 0.5) return '50p Ultimate Credit';
+            return `£${value} Ultimate Credit`;
+        } else {
+            if (value === 0.5) return '50p';
+            return `£${value.toLocaleString()}`;
+        }
+    }
+
+    // Enhanced spin function with streak protection for better player experience
+function spinWheel() {
+    if (isSpinning) return;
+    isSpinning = true;
+    
+    const spinButton = document.getElementById('spin-button');
+    spinButton.disabled = true;
+    spinCount++;
+    
+    // Streak protection: if player has lost 5+ times in a row, boost win chances
+    let streakCount = 0;
+    const spinResults = document.getElementById('spin-results');
+    if (spinResults) {
+        const recentResults = Array.from(spinResults.children).slice(-5);
+        streakCount = 0;
+        for (let i = recentResults.length - 1; i >= 0; i--) {
+            if (recentResults[i].textContent.includes('Better luck next time')) {
+                streakCount++;
+            } else {
+                break;
+            }
+        }
+    }
+    
+    // Apply streak protection by temporarily reducing X segment probabilities
+    let adjustedSegments = [...wheelConfig.segments];
+    if (streakCount >= 5) {
+        console.log(`Streak protection activated! ${streakCount} losses in a row.`);
+        adjustedSegments = adjustedSegments.map(segment => {
+            if (segment.type === 'x') {
+                return { ...segment, probability: segment.probability * 0.3 }; // Reduce X probability by 70%
+            } else {
+                return { ...segment, probability: segment.probability * 1.1 }; // Boost win probabilities by 10%
+            }
+        });
+    }
+    
+    // Use adjusted probabilities for this spin
+    const totalProb = adjustedSegments.reduce((sum, s) => sum + s.probability, 0);
+    const random = Math.random() * totalProb;
+    let accumulatedProbability = 0;
+    let selectedSegment = null;
+    
+    for (const segment of adjustedSegments) {
+        accumulatedProbability += segment.probability;
+        if (random <= accumulatedProbability) {
+            // Find the original segment (not the adjusted one)
+            selectedSegment = wheelConfig.segments.find(s => s.country === segment.country && s.type === segment.type);
+            break;
+        }
+    }
+    
+    // Get the index of the selected segment
+    const targetIndex = wheelConfig.segments.indexOf(selectedSegment);
+    
+    // Calculate rotation
+    const segmentAngle = (2 * Math.PI) / wheelConfig.segments.length;
+    const fullRotations = 5 + Math.floor(Math.random() * 2);
+    
+    const pointerAngle = -Math.PI / 2;
+    const targetSegmentCenterAngle = (targetIndex * segmentAngle) + (segmentAngle / 2);
+    const targetRotation = pointerAngle - targetSegmentCenterAngle + (fullRotations * 2 * Math.PI);
+    
+    // Animate
+    const startTime = performance.now();
+    const duration = 4000;
+    
+    function animate(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+        
+        currentRotation = targetRotation * easeOut(progress);
+        drawWheel();
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            isSpinning = false;
+            spinButton.disabled = false;
+            
+            const actualSegment = selectedSegment;
+            
+            // Create result div and display the result
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'spin-result';
+            
+            if (actualSegment.type === 'x') {
+                resultDiv.innerHTML = `<strong>Spin ${spinCount}:</strong> Better luck next time!`;
+            } else {
+                resultDiv.innerHTML = `<strong>Spin ${spinCount}:</strong> ${actualSegment.text} ${actualSegment.country} - ${formatPrize(actualSegment.value, actualSegment.prizeType)}`;
+            }
+            
+            // Get the spin results container
+            if (!spinResults) {
+                console.error('Spin results container not found!');
+                return;
+            }
+            
+            // Add the result to the container
+            spinResults.appendChild(resultDiv);
+            spinResults.scrollTop = spinResults.scrollHeight;
+            
+            // Log for debugging
+            console.log('Final Result:', {
+                'Streak Count': streakCount,
+                'Streak Protection': streakCount >= 5 ? 'ACTIVE' : 'INACTIVE',
+                'Selected Segment': selectedSegment.country || 'X',
+                'Segment Type': selectedSegment.type
+            });
+        }
+    }
+    
+    requestAnimationFrame(animate);
+}
+
+// Verification
+const totalProbability = wheelConfig.segments.reduce((sum, segment) => sum + segment.probability, 0);
+console.log('Total probability:', totalProbability.toFixed(6));
+console.log('Expected win rate:', ((1 - (wheelConfig.segments.filter(s => s.type === 'x').length * 0.0325)) * 100).toFixed(1) + '%');
+
+    // Event listeners
+    document.getElementById('open-wheel-modal').addEventListener('click', (e) => {
+        e.preventDefault();
+        // Check if user is logged in using localStorage
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        
+        if (!isLoggedIn) {
+            // If not logged in, show message and login modal
+            alert('Please login first to access the wheel spins!');
+            localStorage.setItem('postLoginAction', 'showWheel');
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('dropdown-menu').classList.add('hidden');
+            return; // Stop here if not logged in
+        }
+        
+        // Only show wheel if logged in
+        document.getElementById('wheel-modal').classList.remove('hidden');
+        document.getElementById('dropdown-menu').classList.add('hidden');
+        drawWheel();
+    });
+
+    document.getElementById('close-wheel-modal').addEventListener('click', () => {
+        document.getElementById('wheel-modal').classList.add('hidden');
+    });
+
+    document.getElementById('wheel-modal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('wheel-modal')) {
+            document.getElementById('wheel-modal').classList.add('hidden');
+        }
+    });
+
+    document.getElementById('spin-button').addEventListener('click', spinWheel);
+
+    // Initial draw
+    drawWheel();
+
+    // Add test button to run the simulation
+    document.getElementById('spin-button').insertAdjacentHTML('afterend', `
+        <button id="test-simulation" class="mt-4 btn-secondary px-8 py-4 rounded-md text-lg font-bold uppercase">
+            Run 10,000 Spin Test
+        </button>
+    `);
+
+    document.getElementById('test-simulation').addEventListener('click', () => {
+        simulateSpins(10000);
+    });
+
+    // Add test function to verify wheel results
+    function testWheelResults(numSpins = 10) {
+        console.log('=== Testing Wheel Results ===');
+        console.log(`Running ${numSpins} test spins...\n`);
+        
+        // Initialize counters for each type of prize
+        const results = {
+            totalSpins: numSpins,
+            xCount: 0,
+            prizes: {}
+        };
+        
+        // Initialize prize counters
+        wheelConfig.segments.forEach(segment => {
+            if (segment.type === 'flag') {
+                results.prizes[`${segment.country} (${formatPrize(segment.value, segment.prizeType)})`] = 0;
+            }
+        });
+        
+        for (let i = 0; i < numSpins; i++) {
+            // Use the same probability calculation as spinWheel
+            const totalProbability = wheelConfig.segments.reduce((sum, s) => sum + s.probability, 0);
+            const random = Math.random() * totalProbability;
+            
+                let accumulatedProbability = 0;
+            let selectedSegment = null;
+                
+            // Use the same segment selection logic as spinWheel
+            for (const segment of wheelConfig.segments) {
+                    accumulatedProbability += segment.probability;
+                if (random <= accumulatedProbability) {
+                        selectedSegment = segment;
+                        break;
+                    }
+            }
+            
+            // Log the result
+            if (selectedSegment.type === 'x') {
+                console.log(`Spin ${i + 1}: Better luck next time!`);
+                results.xCount++;
+            } else {
+                const prizeKey = `${selectedSegment.country} (${formatPrize(selectedSegment.value, selectedSegment.prizeType)})`;
+                results.prizes[prizeKey]++;
+                console.log(`Spin ${i + 1}: ${selectedSegment.text} ${selectedSegment.country} - ${formatPrize(selectedSegment.value, selectedSegment.prizeType)}`);
+            }
+        }
+        
+        // Print summary
+        console.log('\n=== Test Results Summary ===');
+        console.log(`Total Spins: ${results.totalSpins}`);
+        console.log(`Better Luck Next Time: ${results.xCount} (${((results.xCount/numSpins)*100).toFixed(1)}%)`);
+        console.log('\nPrize Distribution:');
+        Object.entries(results.prizes).forEach(([prize, count]) => {
+            if (count > 0) {  // Only show prizes that were won
+                console.log(`${prize}: ${count} (${((count/numSpins)*100).toFixed(1)}%)`);
+            }
+        });
+        
+        console.log('\nTest complete. Please verify that the wheel lands on the same segments as shown in the results.');
+    }
+
+    // Add simulation function for 10,000 spins
+    function simulateSpins(numSpins = 10000) {
+        console.log('=== Running 10,000 Spin Simulation ===');
+        console.log(`Simulating ${numSpins} spins...\n`);
+        
+        const COST_PER_SPIN = 2; // £2 per spin
+        
+        // Initialize counters for each type of prize
+        const results = {
+            totalSpins: numSpins,
+            xCount: 0,
+            prizes: {}
+        };
+        
+        // Initialize prize counters
+        wheelConfig.segments.forEach(segment => {
+            if (segment.type === 'flag') {
+                results.prizes[`${segment.country} (${formatPrize(segment.value, segment.prizeType)})`] = 0;
+            }
+        });
+        
+        // Run the simulation
+        for (let i = 0; i < numSpins; i++) {
+            const totalProbability = wheelConfig.segments.reduce((sum, s) => sum + s.probability, 0);
+            const random = Math.random() * totalProbability;
+            let accumulatedProbability = 0;
+            let selectedSegment = null;
+            
+            for (const segment of wheelConfig.segments) {
+                accumulatedProbability += segment.probability;
+                if (random <= accumulatedProbability) {
+                    selectedSegment = segment;
+                    break;
+                }
+            }
+            
+            if (selectedSegment.type === 'x') {
+                results.xCount++;
+            } else {
+                const prizeKey = `${selectedSegment.country} (${formatPrize(selectedSegment.value, selectedSegment.prizeType)})`;
+                results.prizes[prizeKey]++;
+            }
+        }
+        
+        // Print summary
+        console.log('\n=== Simulation Results Summary ===');
+        console.log(`Total Spins: ${results.totalSpins}`);
+        console.log(`Better Luck Next Time: ${results.xCount} (${((results.xCount/numSpins)*100).toFixed(1)}%)`);
+        console.log('\nPrize Distribution:');
+        Object.entries(results.prizes).forEach(([prize, count]) => {
+            console.log(`${prize}: ${count} (${((count/numSpins)*100).toFixed(1)}%)`);
+        });
+        
+        // Calculate total value of prizes
+        let totalPrizeValue = 0;
+        Object.entries(results.prizes).forEach(([prize, count]) => {
+            // Get the actual segment value from wheelConfig
+            const country = prize.split(' (')[0];
+            const segment = wheelConfig.segments.find(s => s.country === country);
+            if (segment) {
+                const value = segment.value;
+                totalPrizeValue += value * count;
+            }
+        });
+        
+        // Calculate total revenue and profit
+        const totalRevenue = numSpins * COST_PER_SPIN;
+        const totalProfit = totalRevenue - totalPrizeValue;
+        const profitPerSpin = totalProfit / numSpins;
+        
+        console.log('\n=== Financial Summary ===');
+        console.log(`Total Revenue: £${totalRevenue.toLocaleString()}`);
+        console.log(`Total Prize Value: £${totalPrizeValue.toLocaleString()}`);
+        console.log(`Total Profit: £${totalProfit.toLocaleString()}`);
+        console.log(`Profit per Spin: £${profitPerSpin.toFixed(2)}`);
+        console.log(`Profit Margin: ${((totalProfit / totalRevenue) * 100).toFixed(1)}%`);
+        
+        // Add detailed prize value breakdown
+        console.log('\n=== Prize Value Breakdown ===');
+        Object.entries(results.prizes).forEach(([prize, count]) => {
+            const country = prize.split(' (')[0];
+            const segment = wheelConfig.segments.find(s => s.country === country);
+            if (segment) {
+                const value = segment.value;
+                const totalValue = value * count;
+                console.log(`${prize}: ${count} wins = £${totalValue.toLocaleString()}`);
+            }
+        });
+        
+        console.log('\nSimulation complete. These results show the expected distribution of prizes and profitability.');
+    }
+
+    // Add test button
+    document.getElementById('spin-button').insertAdjacentHTML('afterend', `
+        <button id="test-wheel" class="mt-4 btn-secondary px-8 py-4 rounded-md text-lg font-bold uppercase">
+            Test Wheel Results
+        </button>
+    `);
+
+    document.getElementById('test-wheel').addEventListener('click', () => {
+        testWheelResults(10);
+    });
+</script>
+</body>
+</html>

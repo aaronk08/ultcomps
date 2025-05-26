@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset</title>
+    <style>
+        body {
+            background-color: #1a1a1a;
+        }
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 400px;
+            z-index: 1000;
+            border: 2px solid #ff0000;
+        }
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ff0000;
+        }
+        h2 {
+            color: #ff0000;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ff0000;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #ff0000;
+            border-radius: 4px;
+            background-color: #2a2a2a;
+            color: white;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff0000;
+        }
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .btn:hover {
+            background-color: #cc0000;
+        }
+        .success-message {
+            color: #00ff00;
+            text-align: center;
+            margin-top: 1.5rem;
+            display: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .error-message {
+            color: #ff0000;
+            text-align: center;
+            margin-top: 1.5rem;
+            display: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="popup">
+        <span class="close-btn">&times;</span>
+        <h2>Reset Password</h2>
+        <form id="reset-form">
+            <div class="form-group">
+                <label for="new-password">New Password</label>
+                <input type="password" id="new-password" name="new-password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <button type="submit" class="btn">Reset Password</button>
+        </form>
+        <div class="success-message">Password successfully changed! You can now login.</div>
+        <div class="error-message"></div>
+    </div>
+
+    <script>
+        // Close the popup when the close button is clicked
+        document.querySelector('.close-btn').addEventListener('click', function() {
+            window.close();
+        });
+
+        // Handle form submission
+        document.getElementById('reset-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            // Basic validation
+            if (!newPassword || !confirmPassword) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Store new password in localStorage for demo purposes
+            localStorage.setItem('newPassword', newPassword);
+            
+            // Show success message
+            alert('Password has been reset successfully!');
+            window.location.href = '/ultimate.html';
+        });
+    </script>
+</body>
+</html>

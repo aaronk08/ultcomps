@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password | Ultimate Competitions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#000000',
+                        secondary: '#e30613',
+                        accent: '#d4af37',
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        title: ['Bebas Neue', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-black bg-opacity-80">
+    <div class="bg-primary border-2 border-accent rounded-lg p-8 w-full max-w-sm relative shadow-2xl">
+        <h2 class="text-2xl font-title font-bold mb-6 text-accent text-center tracking-wide">Reset Password</h2>
+        <form id="reset-form">
+            <div class="mb-4">
+                <label for="new-password" class="block text-sm font-medium text-accent mb-1">New Password</label>
+                <input type="password" id="new-password" name="new-password" placeholder="Enter new password" class="w-full p-3 bg-black border border-accent rounded text-white focus:outline-none focus:ring-2 focus:ring-accent" required>
+            </div>
+            <div class="mb-6">
+                <label for="confirm-password" class="block text-sm font-medium text-accent mb-1">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm new password" class="w-full p-3 bg-black border border-accent rounded text-white focus:outline-none focus:ring-2 focus:ring-accent" required>
+            </div>
+            <button type="submit" class="btn-secondary w-full py-3 rounded-md text-lg font-bold uppercase transition-all">
+                Reset Password
+            </button>
+        </form>
+        <p class="mt-6 text-center text-sm text-gray-400">
+            Remember your password? <a href="/" class="text-accent hover:underline">Back to Login</a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('reset-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const newPassword = document.getElementById('new-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            
+            // Basic validation
+            if (!newPassword || !confirmPassword) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            // Store new password in localStorage for demo purposes
+            localStorage.setItem('newPassword', newPassword);
+            
+            // Show success message
+            alert('Password has been reset successfully!');
+            window.location.href = '/ultimate.html';
+        });
+    </script>
+</body>
+</html>
